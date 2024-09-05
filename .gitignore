@@ -26,6 +26,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+minitorch/bin/
+minitorch/lib64
+minitorch/pyvenv.cfg
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -130,3 +133,5 @@ dmypy.json
 *.\#*
 data/
 pyodide
+minitorch/etc/
+minitorch/share/

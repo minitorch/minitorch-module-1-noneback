@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Iterable, List, Tuple
+from minitorch.operators  import sum
 
 from typing_extensions import Protocol
 
@@ -22,8 +23,20 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
     Returns:
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
-    # TODO: Implement for Task 1.1.
-    raise NotImplementedError("Need to implement for Task 1.1")
+    values = list(vals)
+    delta1 = vals[arg]+epsilon/2
+    delta2 = vals[arg]-epsilon/2
+    
+    values[arg] = delta1
+    y1 = f(*values)
+    values[arg] = delta2
+    y2 = f(*values)
+    print(y1,y2)
+    
+    return (y1-y2) / epsilon
+    
+    
+    
 
 
 variable_count = 1
