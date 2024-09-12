@@ -41,7 +41,6 @@ class ScalarHistory:
     inputs: Sequence[Scalar] = ()
 
 
-# ## Task 1.2 and 1.4
 # Scalar Forward and Backward
 
 _var_count = 0
