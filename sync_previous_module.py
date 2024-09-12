@@ -46,5 +46,6 @@ try:
     print(f"Finished moving {len(files_to_move)} files")
 except Exception as e:
     print(
-        "Something went wrong! please check if the source and destination folders are present in same folder"
+        "Something went wrong! please check if the source and destination folders are present in same folder",    os.path.join(grandparent_path, source, file),
+            os.path.join(grandparent_path, dest, file)
     )

@@ -91,56 +91,81 @@ def test_eq(a: float) -> None:
     assert eq(a, a + 1.0) == 0.0
 
 
-# ## Task 0.2 - Property Testing
-
-# Implement the following property checks
-# that ensure that your operators obey basic
-# mathematical rules.
-
-
 @pytest.mark.task0_2
 @given(small_floats)
 def test_sigmoid(a: float) -> None:
-    """Check properties of the sigmoid function, specifically
-    * It is always between 0.0 and 1.0.
-    * one minus sigmoid is the same as sigmoid of the negative
-    * It crosses 0 at 0.5
-    * It is  strictly increasing.
-    """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    """Check properties of the sigmoid function."""
+    from minitorch.operators import sigmoid  # 假设 sigmoid 函数已经定义了
+
+    # 计算 sigmoid
+    sig = sigmoid(a)
+
+    # It is always between 0.0 and 1.0
+    assert 0.0 <= sig <= 1.0, "Sigmoid output is outside [0, 1]"
+
+    # one minus sigmoid is the same as sigmoid of the negative
+    assert abs(1 - sig - sigmoid(-a)) < 1e-9, "1 - sigmoid(a) != sigmoid(-a)"
+
+    # It crosses 0 at 0.5
+    if a == 0:
+        assert abs(sig - 0.5) < 1e-9, "Sigmoid at 0 should be 0.5"
+
+    # # It is strictly increasing
+    a1, a2 = a / 100, (a + 50) / 100
+    # print(a1, a2)
+    assert sigmoid(a1) < sigmoid(
+        a2
+    ), "Sigmoid is not strictly increasing: a1 {} a2 {}".format(a1, a2)
 
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
 def test_transitive(a: float, b: float, c: float) -> None:
     "Test the transitive property of less-than (a < b and b < c implies a < c)"
-    raise NotImplementedError("Need to include this file from past assignment.")
+    if a < b and b < c:
+        assert a < c, "Transitive property failed"
 
 
 @pytest.mark.task0_2
 def test_symmetric() -> None:
     """
-    Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
-    gives the same value regardless of the order of its input.
+    Test that minitorch.operators.mul is symmetric.
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    from minitorch.operators import mul  # 假设乘法函数已经定义了
+
+    # 定义一些示例值进行测试
+    x = 3.0
+    y = 5.0
+    assert mul(x, y) == mul(y, x), "Multiplication is not symmetric"
 
 
 @pytest.mark.task0_2
 def test_distribute() -> None:
     r"""
-    Write a test that ensures that your operators distribute, i.e.
-    :math:`z \times (x + y) = z \times x + z \times y`
+    Test that operators distribute:
+    z * (x + y) == z * x + z * y
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    from minitorch.operators import mul, add  # 假设加法和乘法函数已经定义了
+
+    z = 2.0
+    x = 3.0
+    y = 4.0
+
+    assert mul(z, add(x, y)) == add(
+        mul(z, x), mul(z, y)
+    ), "Distribution property failed"
 
 
 @pytest.mark.task0_2
 def test_other() -> None:
     """
-    Write a test that ensures some other property holds for your functions.
+    Test some other property, like identity for multiplication.
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+    from minitorch.operators import mul  # 假设乘法函数已经定义了
+
+    x = 1.0
+    assert mul(x, 1.0) == x, "Multiplication with 1 should return the same number"
+    assert mul(x, 0.0) == 0.0, "Multiplication with 0 should return 0"
 
 
 # ## Task 0.3  - Higher-order functions
@@ -168,7 +193,15 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     Write a test that ensures that the sum of `ls1` plus the sum of `ls2`
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
-    raise NotImplementedError("Need to include this file from past assignment.")
+
+    def manual_sum(lst: List[float]) -> float:
+        total = 0.0
+        for number in lst:
+            total += number
+        return total
+
+    # 验证两个总和是否相等
+    assert manual_sum(ls1) == sum(ls1) and sum(ls2) == manual_sum(ls2)
 
 
 @pytest.mark.task0_3
